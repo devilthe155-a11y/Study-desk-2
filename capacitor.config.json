@@ -1,0 +1,14 @@
+{
+  "appId": "com.arpan.studydesk",
+  "appName": "Study Desk",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false,
+    "webContentsDebuggingEnabled": false
+  },
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    }
+  }
+}

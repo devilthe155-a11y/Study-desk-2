@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2f4fb8">
+<!-- script-src allows inline only because the Android shell injects its own bridge script. The web build removes it (see .github/workflows/web.yml). -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://generativelanguage.googleapis.com https://www.caluniv.ac.in https://nta.ac.in https://ugcnet.nta.nic.in https://csirnet.nta.nic.in https://cuet.nta.nic.in https://pgcuet.samarth.ac.in https://gate2027.iitm.ac.in; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Study Desk</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <h1>Study Desk</h1>
+  <nav id="nav" role="tablist" aria-label="Sections"></nav>
+</header>
+<main id="view"></main>
+<div id="toast" role="status" aria-live="polite" hidden></div>
+<script src="data.js"></script>
+<script src="analysis.js"></script>
+<script src="core.js"></script>
+<script src="updates.js"></script>
+<script src="explain.js"></script>
+<script src="notes.js"></script>
+<script src="papers.js"></script>
+<script src="cards.js"></script>
+<script src="tools.js"></script>
+<script src="settings.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
