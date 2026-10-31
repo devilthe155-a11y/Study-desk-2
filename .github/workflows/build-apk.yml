@@ -1,0 +1,65 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Copy web files into www
+        run: |
+          mkdir -p www
+          cp index.html styles.css manifest.webmanifest sw.js icon-192.png icon-512.png *.js www/
+          rm -f www/capacitor.config.js
+
+      - name: Install packages without running install scripts
+        run: npm install --ignore-scripts --no-audit --no-fund
+
+      - name: Create the Android project
+        run: |
+          npx cap add android
+          npx cap sync android
+
+      - name: Harden the Android settings
+        run: |
+          M=android/app/src/main/AndroidManifest.xml
+          sed -i 's/android:allowBackup="true"/android:allowBackup="false"/' "$M"
+          grep -q 'android:usesCleartextTraffic' "$M" || sed -i 's/<application/<application android:usesCleartextTraffic="false"/' "$M"
+          grep -q 'allowBackup="false"' "$M"
+          grep -q 'usesCleartextTraffic="false"' "$M"
+          echo "Manifest permissions:"
+          grep -o 'uses-permission[^/]*' "$M"
+
+      - name: Build the APK
+        run: ./gradlew assembleDebug
+        working-directory: android
+
+      - name: Make a checksum so you can verify the file
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk StudyDesk.apk
+          sha256sum StudyDesk.apk | tee SHA256.txt
+
+      - name: Upload the APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: StudyDesk-apk
+          path: |
+            StudyDesk.apk
+            SHA256.txt
